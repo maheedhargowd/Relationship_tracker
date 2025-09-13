@@ -17,7 +17,7 @@ public class UserService {
     }
     public List<User> getAllUsers(){
 
-        List<User> list = userRepository.findAll();
+        List<User> list = userRepository.findAllByOrderByIdAsc();
         return list;
     }
 }

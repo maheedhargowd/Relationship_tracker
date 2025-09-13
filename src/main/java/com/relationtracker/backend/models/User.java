@@ -2,17 +2,21 @@ package com.relationtracker.backend.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 
 @Entity
 @Table(name="users")
+@JsonPropertyOrder({"id", "userName", "age", "mailId", "relationships"})
 public class User {
 
     @Id
@@ -21,6 +25,7 @@ public class User {
     private Long Id;
 
     @OneToMany(mappedBy="user")
+    @OrderBy("id ASC")
     private List<Relationship> relationships;
 
     @Column(name="user_name",nullable=false)
@@ -37,7 +42,7 @@ public class User {
 
     // Getters and Setters
     public Long getId() { return Id; }
-    public void setId(Long id) { this.Id = Id; }
+    public void setId(Long Id) { this.Id = Id; }
 
     public List<Relationship> getRelationships() { return relationships; }
     public void setRelationships(List<Relationship> relationships) { this.relationships = relationships; }

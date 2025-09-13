@@ -9,6 +9,6 @@ import com.relationtracker.backend.models.User;
 
 public interface  UserRepository extends JpaRepository<User, Long> {
     public Optional<User> findById(Long Id);
-    public List<User> findAll();
+    public List<User> findAllByOrderByIdAsc();
     
 }

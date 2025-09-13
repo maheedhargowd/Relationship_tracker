@@ -1,5 +1,8 @@
 package com.relationtracker.backend.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.relationtracker.backend.models.Relationship;
@@ -21,5 +24,10 @@ public class RelationshipService {
 
         relationshipRepository.save(relationship);
         return "Relationship saved successfully !";
+    }
+
+    public Optional<List<Relationship>> getUserRelationshipList(Long id){
+        Optional<List<Relationship>> result =  relationshipRepository.findByUserIdOrderByIdAsc(id);
+        return result;
     }
 }

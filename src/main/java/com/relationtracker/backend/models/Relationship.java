@@ -1,5 +1,7 @@
 package com.relationtracker.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class Relationship {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="user_id")
     private User user;
 
@@ -41,18 +44,10 @@ public class Relationship {
         return user;
     }
 
-    public Long getId(){
-        return id;
-    }
-    public String  relationshipType(){
-        return relationshipType;
-    }
-    public String relationshipName(){
-        return relationshipName;
-    }
-    public Double relationshipAge(){
-        return relationshipAge;
-    }
+    public Long getId() { return id; }
+    public String getRelationshipType() { return relationshipType; }
+    public String getRelationshipName() { return relationshipName; }  // Fixed spelling
+    public Double getRelationshipAge() { return relationshipAge; }
 
         //setters
     public void setUser(User user) {
