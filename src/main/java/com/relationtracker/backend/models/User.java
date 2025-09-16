@@ -22,7 +22,7 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="user_id" , nullable=false)
-    private Long Id;
+    private Long id;
 
     @OneToMany(mappedBy="user")
     @OrderBy("id ASC")
@@ -41,8 +41,8 @@ public class User {
     public User() {}
 
     // Getters and Setters
-    public Long getId() { return Id; }
-    public void setId(Long Id) { this.Id = Id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public List<Relationship> getRelationships() { return relationships; }
     public void setRelationships(List<Relationship> relationships) { this.relationships = relationships; }
