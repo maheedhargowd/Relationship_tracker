@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping; // CORRECT IMPORT
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,6 +58,17 @@ public class RelationshipController {
     public ResponseEntity<?> getUserRelarionships(@PathVariable Long userId){
         Optional<List<Relationship>> result = relationshipService.getUserRelationshipList(userId);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PutMapping("/users/{userid}/updaterelatioship/{relationshipid}")
+    public ResponseEntity<?> updateuserrelationship(@PathVariable Long userid , @PathVariable Long relationshipid , @RequestBody RelationshipRequest request){
+        String result = relationshipService.updateRelationship(userid,relationshipid,request);
+        if(result.equals("Relationship updated successfully !")){
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
+        }
+        
     }
 
 

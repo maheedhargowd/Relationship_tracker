@@ -11,5 +11,8 @@ import com.relationtracker.backend.models.Relationship;
 
 public interface  RelationshipRepository extends JpaRepository<Relationship,Long> {
 
+    public Optional<Relationship>  findById(Long id);
+
     public  Optional<List<Relationship>> findByUserIdOrderByIdAsc(Long Id);
+
 }

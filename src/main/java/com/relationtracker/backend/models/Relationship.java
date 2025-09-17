@@ -25,7 +25,7 @@ public class Relationship {
     @JoinColumn(name="user_id")
     private User user;
 
-    @Column(name="relationship_type",nullable=false)
+    @Column(name="relationship_type")
     private String relationshipType;
 
     @Column(name="relationship_name")
