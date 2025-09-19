@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping; // CORRECT IMPORT
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,8 @@ import com.relationtracker.backend.models.RelationshipRequest;
 import com.relationtracker.backend.models.User;
 import com.relationtracker.backend.repositories.UserRepository;
 import com.relationtracker.backend.services.RelationshipService;
+import com.relationtracker.exception.RelationshipNotFoundException;
+import com.relationtracker.exception.UnauthorizedRelationshipAccessException;
 
 @RestController
 @RequestMapping("/api")
@@ -60,16 +63,37 @@ public class RelationshipController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/users/{userid}/updaterelatioship/{relationshipid}")
-    public ResponseEntity<?> updateuserrelationship(@PathVariable Long userid , @PathVariable Long relationshipid , @RequestBody RelationshipRequest request){
+    @PutMapping("/users/{userid}/updaterelationship/{relationshipid}")
+    public ResponseEntity<?> updateUserRelationship(@PathVariable Long userid , @PathVariable Long relationshipid , @RequestBody RelationshipRequest request){
         String result = relationshipService.updateRelationship(userid,relationshipid,request);
         if(result.equals("Relationship updated successfully !")){
             return new ResponseEntity<>(result,HttpStatus.OK);
+        }else if (result.equals("given userid doesn't have any relationships !")){
+            return new ResponseEntity<>(result,HttpStatus.FORBIDDEN);
         }else{
-            return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
         
     }
+
+   @DeleteMapping("/users/{userid}/relationship/{relationshipid}")
+public ResponseEntity<?> deleteUserRelationship(
+    @PathVariable Long userid, 
+    @PathVariable Long relationshipid) {
+    
+    try {
+        relationshipService.deleteRelationship(userid, relationshipid);
+        return ResponseEntity.noContent().build(); // 204 No Content
+    } catch (RelationshipNotFoundException e) {
+        return ResponseEntity.notFound().build(); // 404 Not Found
+    } catch (UnauthorizedRelationshipAccessException e) {
+        return ResponseEntity.badRequest().body(e.getMessage()); // 400 Bad Request
+    } catch (Exception e) {
+        return ResponseEntity.internalServerError()
+            .body("An unexpected error occurred"); // 500 Internal Server Error
+    }
+}
+
 
 
 }
